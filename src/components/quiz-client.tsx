@@ -227,7 +227,13 @@ export default function QuizClient({ year, questions }: QuizClientProps) {
             </Alert>
           )}
         </CardContent>
-        <CardFooter className="flex justify-end">
+        <CardFooter className="flex justify-between">
+            <Link href="/" passHref>
+              <Button variant="outline">
+                <Home className="mr-2 h-4 w-4" />
+                Back to Home
+              </Button>
+            </Link>
           {answered ? (
              <Button
                 onClick={moveToNextQuestion}
