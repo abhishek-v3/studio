@@ -16,7 +16,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { CheckCircle2, XCircle, BrainCircuit, Home, RotateCw } from 'lucide-react';
+import { CheckCircle2, XCircle, BrainCircuit, Home, RotateCw, Lightbulb } from 'lucide-react';
 import { assessStudentAbility, AssessStudentAbilityOutput } from '@/ai/flows/assess-student-ability';
 import { useToast } from '@/hooks/use-toast';
 import type { Question, PastAnswer } from '@/types';
@@ -33,6 +33,8 @@ export default function QuizClient({ year, questions }: QuizClientProps) {
   const [feedback, setFeedback] = useState<Record<number, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [aiResult, setAiResult] = useState<AssessStudentAbilityOutput | null>(null);
+  const [showHint, setShowHint] = useState(false);
+  const [answered, setAnswered] = useState(false);
 
   const { toast } = useToast();
 
@@ -45,15 +47,31 @@ export default function QuizClient({ year, questions }: QuizClientProps) {
   }, [quizFinished, feedback]);
 
   const handleSelectOption = (value: string) => {
+    if (answered) return;
     setSelectedAnswers((prev) => ({
       ...prev,
       [currentQuestion.id]: value,
     }));
   };
 
-  const handleNextQuestion = () => {
-    const isCorrect = selectedAnswers[currentQuestion.id] === currentQuestion.answer;
+  const handleSubmitAnswer = () => {
+    const selectedOption = selectedAnswers[currentQuestion.id];
+    if (!selectedOption) return;
+
+    const isCorrect = selectedOption === currentQuestion.answer;
     setFeedback((prev) => ({ ...prev, [currentQuestion.id]: isCorrect }));
+    setAnswered(true);
+
+    if (!isCorrect) {
+      setShowHint(true);
+    } else {
+      moveToNextQuestion();
+    }
+  };
+  
+  const moveToNextQuestion = () => {
+    setShowHint(false);
+    setAnswered(false);
 
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -61,20 +79,15 @@ export default function QuizClient({ year, questions }: QuizClientProps) {
       handleFinishQuiz();
     }
   };
-  
-  const handleFinishQuiz = async () => {
-    // Final feedback for the last question
-    const isLastCorrect = selectedAnswers[currentQuestion.id] === currentQuestion.answer;
-    const finalFeedback = { ...feedback, [currentQuestion.id]: isLastCorrect };
-    setFeedback(finalFeedback);
 
+  const handleFinishQuiz = async () => {
     setQuizFinished(true);
     setIsSubmitting(true);
 
     const pastAnswers: PastAnswer[] = questions.map((q) => ({
       question: q.question,
       answer: selectedAnswers[q.id] || 'No answer',
-      isCorrect: finalFeedback[q.id] || false,
+      isCorrect: feedback[q.id] || false,
     }));
 
     try {
@@ -99,6 +112,8 @@ export default function QuizClient({ year, questions }: QuizClientProps) {
     setFeedback({});
     setIsSubmitting(false);
     setAiResult(null);
+    setShowHint(false);
+    setAnswered(false);
   };
 
   if (quizFinished) {
@@ -192,6 +207,7 @@ export default function QuizClient({ year, questions }: QuizClientProps) {
             value={selectedAnswers[currentQuestion.id]}
             onValueChange={handleSelectOption}
             className="space-y-2"
+            disabled={answered}
           >
             {currentQuestion.options.map((option, index) => (
               <div key={index} className="flex items-center space-x-2">
@@ -200,15 +216,34 @@ export default function QuizClient({ year, questions }: QuizClientProps) {
               </div>
             ))}
           </RadioGroup>
+          {showHint && (
+            <Alert variant="destructive">
+              <Lightbulb className="h-4 w-4" />
+              <AlertTitle>Hint</AlertTitle>
+              <AlertDescription>
+                {currentQuestion.explanation}
+                <p className="font-bold mt-2">Correct Answer: {currentQuestion.answer}</p>
+              </AlertDescription>
+            </Alert>
+          )}
         </CardContent>
         <CardFooter className="flex justify-end">
-          <Button
-            onClick={handleNextQuestion}
-            disabled={!selectedAnswers[currentQuestion.id]}
-            className="bg-accent hover:bg-accent/90"
-          >
-            {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
-          </Button>
+          {answered ? (
+             <Button
+                onClick={moveToNextQuestion}
+                className="bg-primary hover:bg-primary/90"
+              >
+                {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
+              </Button>
+          ) : (
+            <Button
+              onClick={handleSubmitAnswer}
+              disabled={!selectedAnswers[currentQuestion.id]}
+              className="bg-accent hover:bg-accent/90"
+            >
+              Submit
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </div>
