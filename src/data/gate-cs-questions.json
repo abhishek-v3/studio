@@ -1,0 +1,92 @@
+{
+  "2023": [
+    {
+      "id": 1,
+      "question": "Which of the following is NOT a fundamental data structure?",
+      "options": ["Array", "Linked List", "Tree", "Algorithm"],
+      "answer": "Algorithm",
+      "explanation": "An algorithm is a set of instructions to perform a task, whereas arrays, linked lists, and trees are ways to organize and store data."
+    },
+    {
+      "id": 2,
+      "question": "What is the time complexity of a binary search algorithm?",
+      "options": ["O(n)", "O(log n)", "O(n^2)", "O(1)"],
+      "answer": "O(log n)",
+      "explanation": "Binary search works on sorted arrays and halves the search space in each step, leading to logarithmic time complexity."
+    },
+    {
+      "id": 3,
+      "question": "Which sorting algorithm is known for its 'divide and conquer' strategy?",
+      "options": ["Bubble Sort", "Insertion Sort", "Merge Sort", "Selection Sort"],
+      "answer": "Merge Sort",
+      "explanation": "Merge Sort divides the array into two halves, recursively sorts them, and then merges the two sorted halves."
+    },
+    {
+      "id": 4,
+      "question": "In the context of relational databases, what does SQL stand for?",
+      "options": ["Structured Query Language", "Simple Query Language", "Standard Question Language", "System Query Logic"],
+      "answer": "Structured Query Language",
+      "explanation": "SQL is the standard language for managing and manipulating relational databases."
+    },
+    {
+      "id": 5,
+      "question": "Which of the following protocols operates at the Transport Layer of the OSI model?",
+      "options": ["IP", "HTTP", "TCP", "Ethernet"],
+      "answer": "TCP",
+      "explanation": "TCP (Transmission Control Protocol) is a core protocol of the Transport Layer, providing reliable, ordered, and error-checked delivery of a stream of octets."
+    }
+  ],
+  "2022": [
+    {
+      "id": 1,
+      "question": "A full binary tree with n leaves contains how many nodes?",
+      "options": ["2n - 1", "log2(n)", "n + 1", "2n"],
+      "answer": "2n - 1",
+      "explanation": "In a full binary tree, the number of internal nodes is n-1, where n is the number of leaves. Total nodes = internal nodes + leaves = (n-1) + n = 2n-1."
+    },
+    {
+      "id": 2,
+      "question": "What is the purpose of the 'finally' block in a try-catch-finally statement?",
+      "options": ["To catch exceptions", "To execute code regardless of whether an exception is thrown or not", "To declare exceptions", "To re-throw an exception"],
+      "answer": "To execute code regardless of whether an exception is thrown or not",
+      "explanation": "The 'finally' block is always executed after the try and catch blocks, making it suitable for cleanup tasks like closing files or database connections."
+    },
+    {
+      "id": 3,
+      "question": "Which scheduling algorithm can lead to starvation?",
+      "options": ["First-Come, First-Served (FCFS)", "Shortest Job First (SJF)", "Round Robin", "Priority Scheduling"],
+      "answer": "Priority Scheduling",
+      "explanation": "In priority scheduling, low-priority processes may never get CPU time if there is a steady stream of high-priority processes, a condition known as starvation."
+    },
+    {
+      "id": 4,
+      "question": "What is the primary function of an operating system?",
+      "options": ["To provide a user interface", "To manage hardware and software resources", "To run applications", "To connect to the internet"],
+      "answer": "To manage hardware and software resources",
+      "explanation": "The primary role of an OS is to act as an intermediary between the user and the computer hardware, managing resources like CPU, memory, and I/O devices."
+    }
+  ],
+  "2021": [
+    {
+        "id": 1,
+        "question": "The number of tokens in the following C statement is: printf(\"i = %d, &i = %x\", i, &i);",
+        "options": ["3", "10", "26", "21"],
+        "answer": "10",
+        "explanation": "The tokens are: printf, (, \", i = %d, &i = %x\", ,, i, ,, &i, ), ; which are 10 tokens in total."
+    },
+    {
+        "id": 2,
+        "question": "Which of the following is not a type of database model?",
+        "options": ["Hierarchical Model", "Network Model", "Relational Model", "Cascade Model"],
+        "answer": "Cascade Model",
+        "explanation": "Cascade Model is a software development model, not a database model. The others are all types of database models."
+    },
+    {
+        "id": 3,
+        "question": "A process executes the code: fork(); fork(); fork(); The total number of child processes created is?",
+        "options": ["3", "4", "7", "8"],
+        "answer": "7",
+        "explanation": "The first fork creates 1 child (total 2 processes). Then both processes execute the second fork, creating 2 more children (total 4 processes). All 4 execute the third fork, creating 4 more children. Total processes = 8. Total child processes = 8 - 1 (original) = 7."
+    }
+  ]
+}
